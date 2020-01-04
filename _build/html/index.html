@@ -1,0 +1,511 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to SRMStoFigs! &#8212; SRMS to Figs  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">SRMS to Figs  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-srmstofigs">
+<h1>Welcome to SRMStoFigs!<a class="headerlink" href="#welcome-to-srmstofigs" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>SRMStoFigs is a tool for diagramming control flow within a complex system. It was originally written to pictorial show the flow of information and/or control within parallel programs where there is some degree of non-determinism. However, it can be used in deterministic systems as well.</p>
+<p>The tool reads a simple DSL (domain specific language) and from that generates figures in pretty much any format that you care to generate. The tool generates <em>fig</em> files and, with the use of other tools, it can transform these fig files into PNG or PDF files or other formats. PNG and PDF conversion utilities are included.</p>
+<div class="section" id="downloading-and-dependencies">
+<h2>Downloading and Dependencies<a class="headerlink" href="#downloading-and-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>You can down the tool from <a class="reference external" href="http://github.com/kentdlee/SRMStoFigs">http://github.com/kentdlee/SRMStoFigs</a>. Once downloaded you’ll have to compile the source file. See the srmstofigs.cpp file for the compile command. You need to have a C++ compiler installed (like g++) to compile the code. It should compile with no warnings or errors.</p>
+<p>Either place the directory containing the executables in your path or copy the executables to a directory in your path so you can run the program from anywhere.</p>
+<p>To convert fig files to other formats you need to have additional tools installed. On a Mac OS X system you can use <a class="reference external" href="https://brew.sh/">Brew</a> to install <em>imagemagick</em>, <em>transfig</em>, and <em>gs</em> (i.e. ghostscript). If you are running on Linux then you can use your package manager to install these two packages. If you are running Windows you will need some kind of Unix environment installed to compile and run the dependent packages.</p>
+</div>
+<div class="section" id="running-the-tool">
+<h2>Running the Tool<a class="headerlink" href="#running-the-tool" title="Permalink to this headline">¶</a></h2>
+<p>Once downloaded, compiled, and with the dependencies installed, you can run the tool on the example input file using.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Kent<span class="s1">&#39;s Mac&gt; ls</span>
+<span class="s1">README.md   srms2pdf        srms2png        srmsexample     srmstofigs.cpp</span>
+<span class="s1">Kent&#39;</span>s Mac&gt; srms2png srmsexample
+isolation of a62816 requested
+Generating Output
+Converting srmsexample1 to PNG
+Converting srmsexample2 to PNG
+Converting srmsexample3 to PNG
+Converting srmsexample4 to PNG
+Converting srmsexample5 to PNG
+Converting srmsexample6 to PNG
+Kent<span class="s1">&#39;s Mac&gt; ls</span>
+<span class="s1">README.md           srmsexample             srmsexample3.png        srmsexample6.png</span>
+<span class="s1">srms2pdf            srmsexample1.png        srmsexample4.png        srmstofigs.cpp</span>
+<span class="s1">srms2png            srmsexample2.png        srmsexample5.png</span>
+<span class="s1">Kent&#39;</span>s Mac&gt;
+</pre></div>
+</div>
+<p>Then you can open the srmsexample1.png through srmsexample6.png. On a Mac OS X system the srms2png will automatically open the pngs for your inspection.</p>
+<p>Here is the first PNG from the example.</p>
+<div class="figure">
+<img alt="_images/srmsexample1.png" src="_images/srmsexample1.png" />
+</div>
+</div>
+<div class="section" id="the-input-language">
+<h2>The Input Language<a class="headerlink" href="#the-input-language" title="Permalink to this headline">¶</a></h2>
+<p>The input to <em>SRMStoFigs</em> starts with two dimensions given in inches. This represents the size of figures to be produced from the tool. The flow diagrams
+produced by the tool will be split into figures that adhere to this dimension size.</p>
+<p>Next, after the <em>begin components</em> the components that are to appear across the top of the page are given. Each component consists of an identifier, like <em>a62816</em> and a name to be included in the diagram in double quotes. When referring to the component later in the input file, only the identifier is used.</p>
+<p>The <em>end;</em> ends the components section. The rest of the file contains a series of commands which generally represent Send/Receive Messages or other data flow within the software system being diagrammed. The rest of the file contains commands that draw text and arrows that show the data/control flow of the system. The allowed commands are given in the next section.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>8 10
+begin components
+a62816 &quot;Client Application&quot;
+p62816 &quot;Client Port# 62816&quot;
+p1142 &quot;ServerSocket Port# 1142&quot;
+end;
+isolate a62816
+p62816 p1142 &quot;SYN Packet SeqNum=71452&quot;;
+ltext@ a62816 &quot;Wrote Hi there!&quot;;
+component p62817 &quot;Server Port# 62817&quot;;
+component a62817 &quot;Server Application&quot;;
+ctext@ p62816 &quot;state=SYN_SENT&quot;;
+ctext@ p62816 &quot;received packet: ACK|SYN, SeqNum=16951, AckNum=71453&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=71453&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+p1142 p62816 &quot;SYN ACK Packet SeqNum=16951 ackNum=71453&quot;;
+p62816 p62817 &quot;ACK Packet&quot;;
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-diagramming-commands">
+<h2>The Diagramming Commands<a class="headerlink" href="#the-diagramming-commands" title="Permalink to this headline">¶</a></h2>
+<p>As seen above, each component consists of a vertical line in the figures that result from running the tool. The commands refer to these component identifiers (CIDs) in their descriptions below.</p>
+<p>Input lines are generally terminated with a semicolon. Semicolons are not insignificant. The are used to advance the vertical position of the next command
+within the figure. Without a semicolon, multiple commands will write to the same vertical position within the figure.</p>
+<dl class="function">
+<dt>
+<code class="descname">component CID &quot;Name in Figure&quot;</code></dt>
+<dd><p>Add an additional component that wasn’t known at the beginning of the
+input file. This can be useful when an input file to SRMStoFigs is
+automatically generated to show a specfic run/interaction of the code.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">CID1 CID2 &quot;Text Describing Message&quot;</code></dt>
+<dd><p>Draw an arrow from component <em>CID1</em> to component <em>CID2</em> showing the flow of information or control with the text inscribed just above the arrow.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">isolate CID</code></dt>
+<dd><p>Perform a transitive closure on messsages sent to and from the component <em>CID</em> with the diagram. Eliminate any components that don’t interact with <em>CID</em> either directly for through the transitive closure to <em>CID</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">ctext&#64; CID &quot;Text Description&quot;</code></dt>
+<dd><p>Position text centered in the vertical line associated with <em>CID</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">ltext&#64; CID &quot;Text Description&quot;</code></dt>
+<dd><p>Position text left justified on the vertical line associated with <em>CID</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="descname">ltext&#64; CID &quot;Text Description&quot;</code></dt>
+<dd><p>Position text right justified on the vertical line associated with <em>CID</em>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="complete-sample-input-file">
+<h2>Complete Sample Input File<a class="headerlink" href="#complete-sample-input-file" title="Permalink to this headline">¶</a></h2>
+<p>Here is the complete sample input file for SRMStoFigs.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>8 10
+begin components
+a62816 &quot;Client Application&quot;
+p62816 &quot;Client Port# 62816&quot;
+p1142 &quot;ServerSocket Port# 1142&quot;
+end;
+isolate a62816
+p62816 p1142 &quot;SYN Packet SeqNum=71452&quot;;
+ltext@ a62816 &quot;Wrote Hi there!&quot;;
+component p62817 &quot;Server Port# 62817&quot;;
+component a62817 &quot;Server Application&quot;;
+ctext@ p62816 &quot;state=SYN_SENT&quot;;
+ctext@ p62816 &quot;received packet: ACK|SYN, SeqNum=16951, AckNum=71453&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=71453&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+p1142 p62816 &quot;SYN ACK Packet SeqNum=16951 ackNum=71453&quot;;
+p62816 p62817 &quot;ACK Packet&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;state=SYN_RECEIVED&quot;;
+ctext@ p62817 &quot;received packet: ACK, SeqNum=71453, AckNum=16952&quot;;
+ctext@ p62817 &quot;Received ACK(s) AckNum=16952&quot;;
+ctext@ p62817 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=71453&quot;;
+p62816 p62817 &quot;Packet SeqNum=71453, AckNum=16952, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=71453, AckNum=16952&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ a62817 &quot;read what should be &#39;Hi there&#39;&quot;;
+ctext@ a62817 &quot;wrote &#39;How are you?&#39;&quot;;
+ctext@ p62817 &quot;Processing segment. SeqNum=16952&quot;;
+ctext@ p62817 &quot;Piggy Backing ACK on next data packet.&quot;;
+p62817 p62816 &quot;Packet SeqNum=16952, AckNum=71464, flags=ACK&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16952, AckNum=71464&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=71464&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+p62816 a62816 &quot;Data&quot;;
+ltext@ a62816 &quot;Read data from other side.&quot;;
+ltext@ a62816 &quot;Initial success on client side!!!!&quot;;
+ltext@ a62816 &quot;Wrote I am fine!!!!&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=71464&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=71479&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=72483&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=72503&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=73507&quot;;
+ctext@ p62816 &quot;Piggy Backing ACK on next data packet.&quot;;
+p62816 p62817 &quot;Packet SeqNum=71464, AckNum=16966, flags=ACK&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: ACK, SeqNum=71464, AckNum=16966&quot;;
+ctext@ p62817 &quot;Received ACK(s) AckNum=16966&quot;;
+p62816 p62817 &quot;Packet SeqNum=71479, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;Unacknowledged number = 0&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62816 p62817 &quot;Packet SeqNum=72483, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+rtext@ a62817 &quot;Initial success on server side!!!!&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72483, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=72483 expected SeqNum=71479&quot;;
+p62816 p62817 &quot;Packet SeqNum=72503, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72503, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=72503 expected SeqNum=71479&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=71479&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=71464 flags=ACK&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=71479 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=72483 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: ACK, SeqNum=71464, AckNum=16966&quot;;
+ctext@ p62817 &quot;Received ACK(s) AckNum=16966&quot;;
+ctext@ p62817 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=71464 expected SeqNum=71479&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=71479, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72483, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=72503 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72503, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=73507&quot;;
+ctext@ p62816 &quot;Received packet with error.&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16952, AckNum=71464&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=71464 flags=ACK&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=71479 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;received packet: ACK, SeqNum=71464, AckNum=16966&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=72483 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;Received ACK(s) AckNum=16966&quot;;
+ctext@ p62817 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=72503 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;Received SeqNum=71464 expected SeqNum=73507&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=71479, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=71479 expected SeqNum=73507&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72483, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=72483 expected SeqNum=73507&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=72503, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=72503 expected SeqNum=73507&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=73507&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=73507&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=73507&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=73527&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=74531&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=74551&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=75555&quot;;
+p62816 p62817 &quot;Packet SeqNum=73507, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Packet SeqNum=73527, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Packet SeqNum=74531, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+p62816 p62817 &quot;Packet SeqNum=74551, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=74531, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=74531 expected SeqNum=73507&quot;;
+ctext@ p62817 &quot;Received packet with error.&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=74531, AckNum=16966&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=73507&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=73507&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=73507&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 4&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=73507 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=73527 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=74531 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=73507, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=74551 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=73527, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=74531, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=74551, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=75555&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=75555&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=75555&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=75575&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=76579&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=76599&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=77603&quot;;
+p62816 p62817 &quot;Packet SeqNum=75555, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;Received packet with error.&quot;;
+p62816 p62817 &quot;Packet SeqNum=75575, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=74551, AckNum=16966&quot;;
+p62816 p62817 &quot;Packet SeqNum=76579, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=75575, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=75575 expected SeqNum=75555&quot;;
+p62816 p62817 &quot;Packet SeqNum=76599, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=76579, AckNum=16966&quot;;
+ctext@ p62817 &quot;Ignoring Out of Order Packet&quot;;
+ctext@ p62817 &quot;Received SeqNum=76579 expected SeqNum=75555&quot;;
+ctext@ p62817 &quot;Received packet with error.&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=76579, AckNum=16966&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=75555&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=75555&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=75555&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 4&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=75555 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=75575 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=76579 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=76599 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=75555, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=75575, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=76579, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=76599, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=77603&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=77603&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=77603&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 0&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=77623&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=78627&quot;;
+ltext@ a62816 &quot;The independence.txt file has been read and sent.&quot;;
+ctext@ p62816 &quot;Processing segment. SeqNum=78647&quot;;
+ctext@ p62816 &quot;End of input stream reached.&quot;;
+ctext@ p62816 &quot;Reader Thread has exited.&quot;;
+p62816 p62817 &quot;Packet SeqNum=77603, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Packet SeqNum=77623, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=77603, AckNum=16966&quot;;
+p62816 p62817 &quot;Packet SeqNum=78627, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+p62817 a62817 &quot;Data&quot;;
+p62816 p62817 &quot;Packet SeqNum=78647, AckNum=16966, flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=77623, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;Received packet with error.&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=77623, AckNum=16966&quot;;
+p62817 p62816 &quot;ACK Packet AckNum=78627&quot;;
+ctext@ p62816 &quot;state=ESTABLISHED&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=78627&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=78627&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 2&quot;;
+ctext@ p62816 &quot;Entering state FIN_WAIT_1&quot;;
+p62816 p62817 &quot;Packet SeqNum=79536, AckNum=16966, flags=FIN&quot;;
+ctext@ p62817 &quot;Received packet with error.&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=77623, AckNum=16966&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=78627 flags=&lt;data packet&gt;&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=78647 flags=&lt;data packet&gt;&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=79536 flags=FIN&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=78627, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=78647, AckNum=16966&quot;;
+p62817 a62817 &quot;Data&quot;;
+ctext@ p62817 &quot;state=ESTABLISHED&quot;;
+ctext@ p62817 &quot;received packet: FIN, SeqNum=79536, AckNum=16966&quot;;
+rtext@ a62817 &quot;Finished copying independence.txt to copy.txt&quot;;
+ctext@ p62817 &quot;Piggy Backing ACK on next data packet.&quot;;
+p62817 p62816 &quot;Packet SeqNum=16966, AckNum=79536, flags=ACK&quot;;
+ctext@ p62817 &quot;Connection State is now LAST_ACK&quot;;
+p62817 p62816 &quot;Packet SeqNum=16966, AckNum=79536, flags=FIN&quot;;
+ctext@ p62816 &quot;state=FIN_WAIT_1&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=79536&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=79536&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 1&quot;;
+ctext@ p62816 &quot;Received packet with error.&quot;;
+ctext@ p62816 &quot;state=FIN_WAIT_2&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=79536&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=79536 flags=FIN&quot;;
+ctext@ p62817 &quot;state=LAST_ACK&quot;;
+ctext@ p62817 &quot;received packet: FIN, SeqNum=79536, AckNum=16966&quot;;
+ctext@ p62817 &quot;ACK Timer Triggered&quot;;
+p62817 p62816 &quot;Resending Packet SeqNum=16966 flags=ACK&quot;;
+p62817 p62816 &quot;Resending Packet SeqNum=16966 flags=FIN&quot;;
+ctext@ p62816 &quot;state=FIN_WAIT_2&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=79536&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=79536&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 1&quot;;
+ctext@ p62816 &quot;state=FIN_WAIT_2&quot;;
+ctext@ p62816 &quot;received packet: FIN, SeqNum=16966, AckNum=79536&quot;;
+p62816 p62817 &quot;ACK Packet&quot;;
+ctext@ p62817 &quot;state=LAST_ACK&quot;;
+ctext@ p62817 &quot;received packet: ACK, SeqNum=79536, AckNum=16966&quot;;
+ctext@ p62817 &quot;Received ACK(s) AckNum=16966&quot;;
+ctext@ p62817 &quot;Unacknowledged number = 2&quot;;
+ctext@ p62817 &quot;Quitting Receive Thread from LAST_ACK.&quot;;
+ctext@ p62817 &quot;Sender Thread has exited.&quot;;
+ctext@ p62816 &quot;ACK Timer Triggered&quot;;
+p62816 p62817 &quot;Resending Packet SeqNum=79536 flags=FIN&quot;;
+ctext@ p62817 &quot;ACK Timer Triggered&quot;;
+p62817 p62816 &quot;Resending Packet SeqNum=16966 flags=ACK&quot;;
+p62817 p62816 &quot;Resending Packet SeqNum=16966 flags=FIN&quot;;
+ctext@ p62816 &quot;state=TIME_WAIT&quot;;
+ctext@ p62816 &quot;received packet: ACK, SeqNum=16966, AckNum=79536&quot;;
+ctext@ p62816 &quot;Received ACK(s) AckNum=79536&quot;;
+ctext@ p62816 &quot;Unacknowledged number = 1&quot;;
+p62816 p62817 &quot;ACK Packet sent again from TIME_WAIT state.&quot;;
+ctext@ p62816 &quot;Sender Thread has exited.&quot;;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to SRMStoFigs!</a><ul>
+<li><a class="reference internal" href="#downloading-and-dependencies">Downloading and Dependencies</a></li>
+<li><a class="reference internal" href="#running-the-tool">Running the Tool</a></li>
+<li><a class="reference internal" href="#the-input-language">The Input Language</a></li>
+<li><a class="reference internal" href="#the-diagramming-commands">The Diagramming Commands</a></li>
+<li><a class="reference internal" href="#complete-sample-input-file">Complete Sample Input File</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">SRMS to Figs  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Kent D. Lee.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+    </div>
+  </body>
+</html>
