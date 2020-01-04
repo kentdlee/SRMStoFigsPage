@@ -14,6 +14,8 @@ SRMStoFigs is a tool for diagramming control flow within a complex system. It wa
 
 The tool reads a simple DSL (domain specific language) and from that generates figures in pretty much any format that you care to generate. The tool generates *fig* files and, with the use of other tools, it can transform these fig files into PNG or PDF files or other formats. PNG and PDF conversion utilities are included.
 
+This tool is free to use for educational and commercial purposes. If you wish to incorporate this code, in full or in part, into a commercial product then you must obtain a license from the author.
+
 Downloading and Dependencies
 -------------------------------
 
@@ -100,7 +102,7 @@ within the figure. Without a semicolon, multiple commands will write to the same
 .. function:: CID1 CID2 "Text Describing Message"
 
     Draw an arrow from component *CID1* to component *CID2* showing the flow of information or control with the text inscribed just above the arrow.
-    
+
 .. function:: isolate CID
 
     Perform a transitive closure on messsages sent to and from the component *CID* with the diagram. Eliminate any components that don't interact with *CID* either directly for through the transitive closure to *CID*.
