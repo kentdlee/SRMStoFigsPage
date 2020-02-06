@@ -105,7 +105,7 @@ within the figure. Without a semicolon, multiple commands will write to the same
 
 .. function:: isolate CID
 
-    Perform a transitive closure on messsages sent to and from the component *CID* with the diagram. Eliminate any components that don't interact with *CID* either directly for through the transitive closure to *CID*.
+    Perform a transitive closure on messsages sent to and from the component *CID* with the diagram. Eliminate any components that don't interact with *CID* either directly or through the transitive closure to *CID*.
 
 .. function:: ctext@ CID "Text Description"
 
@@ -115,7 +115,7 @@ within the figure. Without a semicolon, multiple commands will write to the same
 
     Position text left justified on the vertical line associated with *CID*.
 
-.. function:: ltext@ CID "Text Description"
+.. function:: rtext@ CID "Text Description"
 
     Position text right justified on the vertical line associated with *CID*.
 
