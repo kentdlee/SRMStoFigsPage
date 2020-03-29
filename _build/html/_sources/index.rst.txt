@@ -23,7 +23,7 @@ You can down the tool from http://github.com/kentdlee/SRMStoFigs. Once downloade
 
 Either place the directory containing the executables in your path or copy the executables to a directory in your path so you can run the program from anywhere.
 
-To convert fig files to other formats you need to have additional tools installed. On a Mac OS X system you can use `Brew <https://brew.sh/>`_ to install *imagemagick*, *transfig*, and *gs* (i.e. ghostscript). If you are running on Linux then you can use your package manager to install these two packages. If you are running Windows you will need some kind of Unix environment installed to compile and run the dependent packages.
+To convert fig files to other formats you need to have additional tools installed. On a Mac OS X system you can use `Brew <https://brew.sh/>`_ to install *imagemagick* and *transfig*. If you are running on Linux then you can use your package manager to install these two packages. If you are running Windows you will need some kind of Unix environment installed to compile and run the dependent packages.
 
 Running the Tool
 -----------------
