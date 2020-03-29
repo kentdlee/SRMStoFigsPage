@@ -19,7 +19,7 @@ This tool is free to use for educational and commercial purposes. If you wish to
 Downloading and Dependencies
 -------------------------------
 
-You can down the tool from http://github.com/kentdlee/SRMStoFigs. Once downloaded you'll have to compile the source file. See the srmstofigs.cpp file for the compile command. You need to have a C++ compiler installed (like g++) to compile the code. It should compile with no warnings or errors.
+You can down the tool from http://github.com/kentdlee/SRMStoFigs. Once downloaded you'll have to compile the source file. See the srmstofigs.c file for the compile command. You need to have a C compiler installed (like gcc) to compile the code. It should compile with no warnings or errors.
 
 Either place the directory containing the executables in your path or copy the executables to a directory in your path so you can run the program from anywhere.
 
@@ -103,6 +103,9 @@ within the figure. Without a semicolon, multiple commands will write to the same
 
     Draw an arrow from component *CID1* to component *CID2* showing the flow of information or control with the text inscribed just above the arrow.
 
+    A plus sign (i.e. +) acts like a semicolon. It advances drawing to the next line. But it also suppresses the arrow
+    from being drawn in a message. In this way, text can be centered on an arrow, but split into multiple lines.
+
 .. function:: isolate CID
 
     Perform a transitive closure on messsages sent to and from the component *CID* with the diagram. Eliminate any components that don't interact with *CID* either directly or through the transitive closure to *CID*.
@@ -154,7 +157,8 @@ Here is the complete sample input file for SRMStoFigs.
     p62816 p62817 "Packet SeqNum=71453, AckNum=16952, flags=<data packet>";
     ctext@ p62817 "state=ESTABLISHED";
     ctext@ p62817 "received packet: <data packet>, SeqNum=71453, AckNum=16952";
-    p62817 a62817 "Data";
+    p62817 a62817 "Data"+
+    p62817 a62817 "With more Data";
     ctext@ a62817 "read what should be 'Hi there'";
     ctext@ a62817 "wrote 'How are you?'";
     ctext@ p62817 "Processing segment. SeqNum=16952";

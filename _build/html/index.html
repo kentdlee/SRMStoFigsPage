@@ -43,7 +43,7 @@
 <p>This tool is free to use for educational and commercial purposes. If you wish to incorporate this code, in full or in part, into a commercial product then you must obtain a license from the author.</p>
 <div class="section" id="downloading-and-dependencies">
 <h2>Downloading and Dependencies<a class="headerlink" href="#downloading-and-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>You can down the tool from <a class="reference external" href="http://github.com/kentdlee/SRMStoFigs">http://github.com/kentdlee/SRMStoFigs</a>. Once downloaded you’ll have to compile the source file. See the srmstofigs.cpp file for the compile command. You need to have a C++ compiler installed (like g++) to compile the code. It should compile with no warnings or errors.</p>
+<p>You can down the tool from <a class="reference external" href="http://github.com/kentdlee/SRMStoFigs">http://github.com/kentdlee/SRMStoFigs</a>. Once downloaded you’ll have to compile the source file. See the srmstofigs.c file for the compile command. You need to have a C compiler installed (like gcc) to compile the code. It should compile with no warnings or errors.</p>
 <p>Either place the directory containing the executables in your path or copy the executables to a directory in your path so you can run the program from anywhere.</p>
 <p>To convert fig files to other formats you need to have additional tools installed. On a Mac OS X system you can use <a class="reference external" href="https://brew.sh/">Brew</a> to install <em>imagemagick</em>, <em>transfig</em>, and <em>gs</em> (i.e. ghostscript). If you are running on Linux then you can use your package manager to install these two packages. If you are running Windows you will need some kind of Unix environment installed to compile and run the dependent packages.</p>
 </div>
@@ -117,6 +117,8 @@ automatically generated to show a specfic run/interaction of the code.</p>
 <dt>
 <code class="descname">CID1 CID2 &quot;Text Describing Message&quot;</code></dt>
 <dd><p>Draw an arrow from component <em>CID1</em> to component <em>CID2</em> showing the flow of information or control with the text inscribed just above the arrow.</p>
+<p>A plus sign (i.e. +) acts like a semicolon. It advances drawing to the next line. But it also suppresses the arrow
+from being drawn in a message. In this way, text can be centered on an arrow, but split into multiple lines.</p>
 </dd></dl>
 
 <dl class="function">
@@ -174,7 +176,8 @@ ctext@ p62816 &quot;Processing segment. SeqNum=71453&quot;;
 p62816 p62817 &quot;Packet SeqNum=71453, AckNum=16952, flags=&lt;data packet&gt;&quot;;
 ctext@ p62817 &quot;state=ESTABLISHED&quot;;
 ctext@ p62817 &quot;received packet: &lt;data packet&gt;, SeqNum=71453, AckNum=16952&quot;;
-p62817 a62817 &quot;Data&quot;;
+p62817 a62817 &quot;Data&quot;+
+p62817 a62817 &quot;With more Data&quot;;
 ctext@ a62817 &quot;read what should be &#39;Hi there&#39;&quot;;
 ctext@ a62817 &quot;wrote &#39;How are you?&#39;&quot;;
 ctext@ p62817 &quot;Processing segment. SeqNum=16952&quot;;
