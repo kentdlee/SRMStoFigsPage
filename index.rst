@@ -19,7 +19,7 @@ This tool is free to use for educational and commercial purposes. If you wish to
 Downloading and Dependencies
 -------------------------------
 
-You can down the tool from http://github.com/kentdlee/SRMStoFigs. Once downloaded you'll have to compile the source file. See the srmstofigs.c file for the compile command. You need to have a C compiler installed (like gcc) to compile the code. It should compile with no warnings or errors.
+You can download the tool from http://github.com/kentdlee/SRMStoFigs. Once downloaded you'll have to compile the source file. See the srmstofigs.c file for the compile command. You need to have a C compiler installed (like gcc) to compile the code. It should compile with no warnings or errors.
 
 Either place the directory containing the executables in your path or copy the executables to a directory in your path so you can run the program from anywhere.
 
